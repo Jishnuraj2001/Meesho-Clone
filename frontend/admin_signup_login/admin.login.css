@@ -1,0 +1,45 @@
+*{
+    text-align: center;
+    margin:0px;
+    padding:0px; 
+}
+
+body{
+    background-color: rgb(237, 234, 255);
+    padding:14% 0 14% 0;
+}
+
+#seller-box{
+border:none;
+width: 40%;
+margin: auto;
+background-color: white;
+display: flex;
+flex-direction: column; 
+padding: 10px;
+}
+
+.admininput{
+    width: 90%;
+    padding: 7px;
+    margin: 8px;
+}
+
+h1{
+    margin: 13px;
+}
+
+#admin-btn{
+    width: 94%;
+    font-size: 17px;
+    border:none;
+    color: white;
+    background-color:rgb(13, 138, 50);
+    margin-bottom: 16px;
+}
+
+
+#admin-btn:hover{
+    background-color: rgb(125, 199, 149);
+    cursor: pointer;
+}

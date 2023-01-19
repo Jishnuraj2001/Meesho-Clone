@@ -1,13 +1,13 @@
 const express=require("express");
-const adminRouter=express.Router();
+const userRouter=express.Router();
 const bcrypt=require("bcrypt");
 const jwt=require("jsonwebtoken");
 require("dotenv").config();
 
-const{Adminmodel}=require("../models/admin.model");
+const{Usermodel}=require("../models/user.model");
 
 
-adminRouter.post("/register",async(req,res)=>{
+userRouter.post("/register",async(req,res)=>{
     const{name,age,email,password,location,mobnum}=req.body;
     try {
         bcrypt.hash(password, 7,async(err, hash)=>{
@@ -15,8 +15,8 @@ adminRouter.post("/register",async(req,res)=>{
                 console.log(err.message);
                 res.send("registration failed!,please try again.")
             }else{
-                const adminData=new Adminmodel({name,age,email,"password":hash,location,mobnum});
-                await adminData.save();
+                const userData=new Usermodel({name,age,email,"password":hash,location,mobnum});
+                await userData.save();
                 res.send("Registration successful");
             }
         });
@@ -27,14 +27,14 @@ adminRouter.post("/register",async(req,res)=>{
 })
 
 
-adminRouter.post("/login",async(req,res)=>{
+userRouter.post("/login",async(req,res)=>{
     const{email,password}=req.body;
     try {
-        const admin=await Adminmodel.findOne({email});
-        if(admin){
-            bcrypt.compare(password, admin.password,(err, result)=>{
+        const user=await Usermodel.findOne({email});
+        if(user){
+            bcrypt.compare(password, user.password,(err, result)=>{
                 if(result==true){
-                    const token = jwt.sign({adminID:admin._id},process.env.key);
+                    const token = jwt.sign({adminID:user._id},process.env.key);
                     res.send({"msg":"login sucessful","token":token});
                 }else{
                     res.send("You are not Authorized");
@@ -51,5 +51,5 @@ adminRouter.post("/login",async(req,res)=>{
 
 
 module.exports={
-    adminRouter
+    userRouter
 }
