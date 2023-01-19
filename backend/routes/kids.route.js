@@ -1,10 +1,10 @@
 const express=require("express");
-const menRouter=express.Router();
+const kidRouter=express.Router();
 
-const{Menmodel}=require("../models/men.model");
+const{Kidmodel}=require("../models/kids.model");
 
 
-menRouter.get("/",async(req,res)=>{
+kidRouter.get("/",async(req,res)=>{
     const queryObj={};
     const sortObj={};
     const{price,title,rating,category}=req.query;
@@ -29,43 +29,43 @@ menRouter.get("/",async(req,res)=>{
         queryObj.category={"$regex":category,"$options":"i"};
     }
     try {
-        const data=await Menmodel.find(queryObj).sort(sortObj);
+        const data=await Kidmodel.find(queryObj).sort(sortObj);
         res.send(data);
     } catch (error) {
         console.log(error.message);
-        res.send("Unable to get the data");
+        res.send("Unable to get the kid's data");
     }
 })
 
 
-menRouter.post("/create",async(req,res)=>{
-    const menData=req.body;
+kidRouter.post("/create",async(req,res)=>{
+    const kidData=req.body;
     try {
-        if(menData){
-            const data=Menmodel(menData);
+        if(kidData){
+            const data=Kidmodel(kidData);
             await data.save();
-            res.send("men data added to db");
+            res.send("kid data added to db");
         }else{
-            res.send("unable to add men data to DB");
+            res.send("unable to add kid data to DB");
         }
     } catch (error) {
         console.log(error.message);
-        res.send("unable to add men data to DB");
+        res.send("unable to add kid data to DB");
     }
 })
 
 
-menRouter.patch("/update/:id",async(req,res)=>{
+kidRouter.patch("/update/:id",async(req,res)=>{
     const newData=req.body;
     const id=req.params.id;
     try {
-        const mendata=await Menmodel.findOne({_id:id});
-        if(mendata){
-            const men_adminID=mendata.adminID;
+        const kidData=await Kidmodel.findOne({_id:id});
+        if(kidData){
+            const kid_adminID=kidData.adminID;
             const req_adminID=req.body.adminID;
-            if(men_adminID==req_adminID){
-                await Menmodel.findByIdAndUpdate({_id:id},newData);
-                res.send(`men data with id=>${id} is updated`);
+            if(kid_adminID==req_adminID){
+                await Kidmodel.findByIdAndUpdate({_id:id},newData);
+                res.send(`kid data with id=>${id} is updated`);
             }else{
                 res.send({"msg":"you are not Authorized"});
             }
@@ -79,16 +79,16 @@ menRouter.patch("/update/:id",async(req,res)=>{
 })
 
 
-menRouter.delete("/delete/:id",async(req,res)=>{
+kidRouter.delete("/delete/:id",async(req,res)=>{
     const id=req.params.id;
     try {
-        const mendata=await Menmodel.findOne({_id:id});
-        if(mendata){
-            const men_adminID=mendata.adminID;
+        const kidData=await Kidmodel.findOne({_id:id});
+        if(kidData){
+            const kid_adminID=kidData.adminID;
             const req_adminID=req.body.adminID;
-            if(men_adminID==req_adminID){
-                await Menmodel.findByIdAndDelete({_id:id});
-                res.send(`men data with id=>${id} is deleted`);
+            if(kid_adminID==req_adminID){
+                await Kidmodel.findByIdAndDelete({_id:id});
+                res.send(`kid data with id=>${id} is deleted`);
             }else{
                 res.send({"msg":"you are not Authorized"});
             }
@@ -103,5 +103,5 @@ menRouter.delete("/delete/:id",async(req,res)=>{
 
 
 module.exports={
-    menRouter
+    kidRouter
 }

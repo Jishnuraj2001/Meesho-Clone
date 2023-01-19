@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Home</title>
+    <link rel="stylesheet" href="admin.home.css">
+</head>
+<body>
+    
+    <body>
+        <div id="main-container">
+            <div id="add-container">
+                <h2 class="pro-header">Add Product For Men</h2>
+                <form id="add-men">
+                    <input class="inPut M" id="title" type="text" placeholder="product title" required>
+                    <input class="inPut M" id="image" type="text" placeholder="product image" required>
+                    <input class="inPut M" id="category" type="text" placeholder="product category" required>
+                    <input class="inPut M" id="price" type="number" placeholder="product price" required>
+                    <input class="inPut M" id="rating" type="text" placeholder="product rating" required>
+                    <input class="inPut submit-btn" id="men-btn" type="submit">
+                </form>
+                <hr>
+                <h2 class="pro-header">Add Product For Women</h2>
+                <form id="add-women" action="">
+                    <input class="inPut F" id="title" type="text" placeholder="product title" required>
+                    <input class="inPut F" id="image" type="text" placeholder="product image" required>
+                    <input class="inPut F" id="category" type="text" placeholder="product category" required>
+                    <input class="inPut F" id="price" type="number" placeholder="product price" required>
+                    <input class="inPut F" id="rating" type="text" placeholder="product rating" required>
+                    <input class="inPut submit-btn" id="women-btn" type="submit">
+                </form>
+                <hr>
+                <button class="get-product-btn" id="get-women-btn">Get All Women's Products</button>
+                <button class="get-product-btn" id="get-men-btn">Get All Men's Products</button>
+                <button class="get-product-btn" id="get-address-btn">Get All User's Address</button>
+            </div>
+            <div id="render-container">
+                <!-- <div class="product-box">
+                    <img class="image" src="https://images.bewakoof.com/t640/women-s-printed-long-kurti-dress-364703-1656167894-1.jpg" alt="">
+                    <div class="content">
+                        <h4 class="title">Kurti</h4>
+                        <p class="description">Women's Printed Long Kurti Dress-Front Bewakoof</p>
+                        <p class="price">334</p>
+                        <button class="edit box-btn">EDIT</button>
+                        <button class="delete box-btn">DELETE</button>
+                    </div>
+                </div> -->
+                <div id="display-address-container"></div>
+                <div id="display-container"></div>
+                <div class="pagination-wrapper" id="pagination-wrapper"></div>
+            </div> 
+        </div>
+    
+    </body>
+
+</body>
+</html>
+<script src="./admin.home.js"></script>

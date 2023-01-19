@@ -1,6 +1,6 @@
 const mongoose=require("mongoose");
 
-const menSchema=mongoose.Schema({
+const kidSchema=mongoose.Schema({
     image:String,
     title:String,
     category:String,
@@ -9,8 +9,8 @@ const menSchema=mongoose.Schema({
     adminID:String
 })
 
-const Menmodel=mongoose.model("men",menSchema);
+const Kidmodel=mongoose.model("kid",kidSchema);
 
 module.exports={
-    Menmodel
+    Kidmodel
 }
