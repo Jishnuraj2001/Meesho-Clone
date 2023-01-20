@@ -7,7 +7,7 @@ const{Womenmodel}=require("../models/women.model");
 womenRouter.get("/",async(req,res)=>{
     const queryObj={};
     const sortObj={};
-    const{price,title,rating,category}=req.query;
+    const{price,title,rating,category,limit,page}=req.query;
     if(price){
         if(price=="asc"||price=="ASC"){
             sortObj.price=1;
@@ -28,8 +28,12 @@ womenRouter.get("/",async(req,res)=>{
     if(category){
         queryObj.category={"$regex":category,"$options":"i"};
     }
+    let Limit=0;
+    if(limit){
+        Limit=limit;
+    }
     try {
-        const data=await Womenmodel.find(queryObj).sort(sortObj);
+        const data=await Womenmodel.find(queryObj).sort(sortObj).skip((page-1)*Limit).limit(Limit);
         res.send(data);
     } catch (error) {
         console.log(error.message);

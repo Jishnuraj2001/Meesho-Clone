@@ -7,7 +7,7 @@ const{Kidmodel}=require("../models/kids.model");
 kidRouter.get("/",async(req,res)=>{
     const queryObj={};
     const sortObj={};
-    const{price,title,rating,category}=req.query;
+    const{price,title,rating,category,limit,page}=req.query;
     if(price){
         if(price=="asc"||price=="ASC"){
             sortObj.price=1;
@@ -28,8 +28,12 @@ kidRouter.get("/",async(req,res)=>{
     if(category){
         queryObj.category={"$regex":category,"$options":"i"};
     }
+    let Limit=0;
+    if(limit){
+        Limit=limit;
+    }
     try {
-        const data=await Kidmodel.find(queryObj).sort(sortObj);
+        const data=await Kidmodel.find(queryObj).sort(sortObj).skip((page-1)*Limit).limit(Limit);
         res.send(data);
     } catch (error) {
         console.log(error.message);

@@ -69,34 +69,46 @@ async function addWomenProductFunction(obj){
 }
 
 
-let deleteURL="";
-
 //FETCH/GET ALL PRODUCTS
 
 let get_men_btn =document.querySelector("#get-men-btn");
 get_men_btn.addEventListener("click",(event)=>{
-    let url="http://localhost:3000/manproduct";
-    //deleteURL="http://localhost:3000/manproduct";
+    let url="http://localhost:4040/men";
     getProductsFunction(url);
 })
 
 let get_women_btn =document.querySelector("#get-women-btn");
 get_women_btn.addEventListener("click",(event)=>{
-    let url="http://localhost:3000/Womensproduct";
+    let url="http://localhost:4040/women";
     getProductsFunction(url);
 })
 
 
-async function getProductsFunction(url,data_perpage=8,page_number=1){
+async function getProductsFunction(url,data_perpage=6,page_number=1){
     try {
-        let get_all_data=await fetch(`${url}?_limit=${data_perpage}&_page=${page_number}`,{
+        let allData_req=await fetch(`${url}`,{
             method:"GET",
             headers:{
-                "Content-Type":"application/json"
+                "Content-Type":"application/json",
+                Authorization:sessionStorage.getItem("nxmkey")
+            }
+        });
+        let allData=await allData_req.json();
+        let count=0;
+        for(let data of allData){
+            count++;
+        }
+
+        let get_all_data=await fetch(`${url}?limit=${data_perpage}&page=${page_number}`,{
+            method:"GET",
+            headers:{
+                "Content-Type":"application/json",
+                Authorization:sessionStorage.getItem("nxmkey")
             }
         })
         if(get_all_data.ok){
-            let total_data_count=get_all_data.headers.get("x-total-count");
+            //let total_data_count=get_all_data.headers.get("x-total-count");
+            let total_data_count=count;
             let total_pages=Math.ceil(total_data_count/data_perpage);
             //alert("all products are fetched successfully");
             let all_data=await get_all_data.json();
@@ -115,14 +127,14 @@ function renderDataFunction(all_data,url){
     display_container.innerHTML=null;
     let newData=all_data.map((item)=>{
         return`<div class="product-box">
-                    <img class="image" src=${item.img} alt="">
+                    <img class="image" src=${item.image} alt="">
                     <div class="content">
-                        <h4 class="title">${item.title}</h4>
-                        <p class="description">${item.description.substring(0,30)}...</p>
-                        <p class="pro-id">${item.id}</p>
+                        <h4 class="title">${item.title.substring(0,30)}...</h4>
+                        <p class="description">${item.category}</p>
+                        <p class="pro-id">${item._id}</p>
                         <p class="price">₹${item.price}</p>
                         <button class="edit box-btn">EDIT</button>
-                        <button class="delete box-btn">DELETE</button>
+                        <button class="delete box-btn" data-id=${item._id}>DELETE</button>
                     </div>
                 </div>`;
     })
@@ -132,7 +144,7 @@ function renderDataFunction(all_data,url){
     let all_delete_btns=document.querySelectorAll(".delete");
     for(let delete_btn of all_delete_btns){
         delete_btn.addEventListener("click",(event)=>{
-            let delete_id=Number(event.path[1].children[2].innerText);
+            let delete_id=event.target.dataset.id;
             deleteProductFunction(delete_id,url);
         })
     }
@@ -154,7 +166,7 @@ function renderDataFunction(all_data,url){
                     <button class="save">SAVE</button>
                     </div></div>`; 
                 }
-            }
+            }  
 
             let save_btn=document.querySelector(".save");
             save_btn.addEventListener("click",(eve)=>{
@@ -257,19 +269,22 @@ async function EditRequestPrice(url,id,edit_price){
 //Delete a Product part2
 async function deleteProductFunction(delete_id,url){
     try {
-        let delete_request=await fetch(`${url}/${delete_id}`,{
+        let delete_request=await fetch(`${url}/delete/${delete_id}`,{
             method:"DELETE",
             headers:{
-                "Content-Type":"application/json"
+                "Content-Type":"application/json",
+                Authorization:sessionStorage.getItem("nxmkey")
             }
         })
         if(delete_request.ok){
             alert("product removed successfully");
+            location.reload();
         }else{
-            alert(`there is a ${delete_request.status} error`);
+            alert("Unable to delete the data");
         }
     } catch (error) {
-        alert(error);
+        console.log(error.message);
+        alert("Unable to delete the data");
     }
 }
 
@@ -278,26 +293,23 @@ async function deleteProductFunction(delete_id,url){
 //Pagination part
 let paginationWrapper=document.querySelector("#pagination-wrapper");
 function renderPaginationButtons(total_pages,url){
-    console.log(total_pages);
+    console.log(total_pages,`${url}`);
     paginationWrapper.innerHTML = `
       <div className="pagination-btn-list">
       ${CreatePagButton(total_pages).join(" ")}
       </div>
     `;
-
     //handle clicks of pagination buttons
     let paginationButtons=document.querySelectorAll(".pagination-btn");
     for(let paginationBtn of paginationButtons){
         paginationBtn.addEventListener("click",(event)=>{
             let page_number=event.target.dataset.id;
-            getProductsFunction(url,data_perpage=8,page_number);
+            //console.log(page_number);
+            getProductsFunction(url,data_perpage=6,page_number);
             // getAddressFunction(url,data_perpage=4,page_number);
         })
     }
-    
-
 }
-
 function CreatePagButton(total_page){
     let array=[];
     for(let page=1;page<=total_page;page++){
@@ -305,9 +317,9 @@ function CreatePagButton(total_page){
     }
     return array;
 }
-
 function getAsBtn(text,dataId){
-    return`<button class="pagination-btn" ${dataId ? `data-id=${dataId}`:''}">${text}</button>`;
+    console.log(dataId);
+    return`<button class="pagination-btn" data-id=${dataId} ${dataId ? `data-id=${dataId}`:''}">${text}</button>`;
 }
 
 
@@ -384,7 +396,7 @@ function renderAddressDataFunction(all_data,url){
 
 let pageWrapper=document.querySelector("#pagination-wrapper");
 function renderPageButtons(total_pages,url){
-    console.log(total_pages);
+    //console.log(total_pages);
     paginationWrapper.innerHTML = `
       <div className="pagination-btn-list">
       ${CreatePageButton(total_pages).join(" ")}
@@ -396,6 +408,7 @@ function renderPageButtons(total_pages,url){
     for(let paginationBtn of paginationButtons){
         paginationBtn.addEventListener("click",(event)=>{
             let page_number=event.target.dataset.id;
+            console.log(page_number);
             getAddressFunction(url,data_perpage=4,page_number);
         })
     }
@@ -412,6 +425,6 @@ function CreatePageButton(total_page){
 }
 
 function GetAsBtn(text,dataId){
-    return`<button class="pagination-btn" ${dataId ? `data-id=${dataId}`:''}">${text}</button>`;
+    return`<button class="pagination-btn"${dataId ? `data-id=${dataId}`:''}>${text}</button>`;
 }
 
