@@ -14,6 +14,7 @@ const{userRouter}=require("./routes/user.route");
 const{menRouter}=require("./routes/men.route");
 const{womenRouter}=require("./routes/women.route");
 const{kidRouter}=require("./routes/kids.route");
+const{landRouter}=require("./routes/land.route");
 const{authenticator}=require("./middlewares/authenticator.middleware");
 
 
@@ -27,6 +28,7 @@ app.use(authenticator);
 app.use("/men",menRouter);
 app.use("/women",womenRouter);
 app.use("/kid",kidRouter);
+app.use("/land",landRouter);
 
 
 

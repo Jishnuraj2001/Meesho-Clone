@@ -131,7 +131,7 @@ function renderDataFunction(all_data,url){
                     <div class="content">
                         <h4 class="title">${item.title.substring(0,30)}...</h4>
                         <p class="description">${item.category}</p>
-                        <p class="pro-id">${item._id}</p>
+                        <p class="pro-id">${item.rating}</p>
                         <p class="price">₹${item.price}</p>
                         <button class="edit box-btn" data-id=${item._id}>EDIT</button>
                         <button class="delete box-btn" data-id=${item._id}>DELETE</button>
