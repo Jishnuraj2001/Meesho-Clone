@@ -133,7 +133,7 @@ function renderDataFunction(all_data,url){
                         <p class="description">${item.category}</p>
                         <p class="pro-id">${item._id}</p>
                         <p class="price">₹${item.price}</p>
-                        <button class="edit box-btn">EDIT</button>
+                        <button class="edit box-btn" data-id=${item._id}>EDIT</button>
                         <button class="delete box-btn" data-id=${item._id}>DELETE</button>
                     </div>
                 </div>`;
@@ -153,15 +153,16 @@ function renderDataFunction(all_data,url){
     let all_edit_btns=document.querySelectorAll(".edit");
     for(let edit_btn of all_edit_btns){
         edit_btn.addEventListener("click",(event)=>{
-            let edit_id=Number(event.path[1].children[2].innerText);
+            let edit_id=event.target.dataset.id;
+            console.log(edit_id);
             let editURL=`${url}/${edit_id}`;
             for(let edit_data of all_data){
-                if(edit_data.id==edit_id){
+                if(edit_data._id==edit_id){
                     display_container.innerHTML=
                     `<div class="outer-box">
                     <div id="edit_title" contentEditable="true">${edit_data.title}</div>
-                    <div id="edit_img" contentEditable="true">${edit_data.img}</div>
-                    <div id="edit_des" contentEditable="true">${edit_data.description}</div>
+                    <div id="edit_img" contentEditable="true">${edit_data.image}</div>
+                    <div id="edit_des" contentEditable="true">${edit_data.category}</div>
                     <div id="edit_price" contentEditable="true">${edit_data.price}</div>
                     <button class="save">SAVE</button>
                     </div></div>`; 
@@ -188,10 +189,11 @@ function renderDataFunction(all_data,url){
 async function EditRequestTitle(url,id,edit_title){
 	try {
 		
-		let toggle_request = await fetch(`${url}/${id}`,{
+		let toggle_request = await fetch(`${url}/update/${id}`,{
             method : "PATCH",
             headers : {
-				"Content-Type" : "application/json"
+				"Content-Type" : "application/json",
+                Authorization:sessionStorage.getItem("nxmkey")
             },
 			body : JSON.stringify({["title"]:edit_title})
         })
@@ -207,12 +209,13 @@ async function EditRequestTitle(url,id,edit_title){
 async function EditRequestImage(url,id,edit_img){
 	try {
 		
-		let toggle_request = await fetch(`${url}/${id}`,{
+		let toggle_request = await fetch(`${url}/update/${id}`,{
             method : "PATCH",
             headers : {
-				"Content-Type" : "application/json"
+				"Content-Type" : "application/json",
+                Authorization:sessionStorage.getItem("nxmkey")
             },
-			body : JSON.stringify({["img"]:edit_img})
+			body : JSON.stringify({["image"]:edit_img})
         })
 		if(toggle_request.ok){
 
@@ -226,12 +229,13 @@ async function EditRequestImage(url,id,edit_img){
 async function EditRequestDescription(url,id,edit_des){
 	try {
 		
-		let toggle_request = await fetch(`${url}/${id}`,{
+		let toggle_request = await fetch(`${url}/update/${id}`,{
             method : "PATCH",
             headers : {
-				"Content-Type" : "application/json"
+				"Content-Type" : "application/json",
+                Authorization:sessionStorage.getItem("nxmkey")
             },
-			body : JSON.stringify({["description"]:edit_des})
+			body : JSON.stringify({["category"]:edit_des})
         })
 		if(toggle_request.ok){
 
@@ -245,15 +249,17 @@ async function EditRequestDescription(url,id,edit_des){
 async function EditRequestPrice(url,id,edit_price){
 	try {
 		
-		let toggle_request = await fetch(`${url}/${id}`,{
+		let toggle_request = await fetch(`${url}/update/${id}`,{
             method : "PATCH",
             headers : {
-				"Content-Type" : "application/json"
+				"Content-Type" : "application/json",
+                Authorization:sessionStorage.getItem("nxmkey")
             },
 			body : JSON.stringify({["price"]:edit_price})
         })
 		if(toggle_request.ok){
-
+            alert("Data updated successfully.");
+            location.reload();
 		}
 	} catch (error) {
 		alert("You are not allowed to Toggle it.");	

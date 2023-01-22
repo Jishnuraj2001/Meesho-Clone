@@ -1,0 +1,61 @@
+*{
+    text-align: center;
+    margin:0px;
+    padding:0px; 
+}
+
+body{
+    background-color: rgb(237, 234, 255);
+    padding:3%;
+}
+
+#user-box{
+    border:none;
+    width: 40%;
+    margin: auto;
+    background-color: white;
+    display: flex;
+    flex-direction: column; 
+    padding: 10px;
+    }
+
+    .userinput{
+        width: 90%;
+        padding: 7px;
+        margin: 8px;
+    }
+    
+    h1{
+        margin: 13px;
+    }
+    
+    #user-btn{
+        width: 94%;
+        font-size: 17px;
+        border:none;
+        color: white;
+        background-color:rgb(13, 138, 50);
+        margin-bottom: 16px;
+    }
+
+    h2{
+        margin:8px;
+        margin-top: 16px;
+    }
+    
+    #gotologin{
+        margin: auto;
+        width: 94%;
+        margin-bottom:25px;
+        margin-top: 8px;
+        font-size: 17px;
+        border:none;
+        color: white;
+        background-color:rgb(13, 138, 50);
+        padding:7px;
+    }
+    
+    #user-btn:hover,#gotologin:hover{
+        background-color: rgb(125, 199, 149);
+        cursor: pointer;
+    }
